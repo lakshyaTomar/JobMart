@@ -20,7 +20,6 @@
 /home/runner/workspace/src/main/java/com/jobportal/entity/Employer.java
 /home/runner/workspace/src/main/java/com/jobportal/service/impl/JobServiceImpl.java
 /home/runner/workspace/src/main/java/com/jobportal/repository/JobRepository.java
-/home/runner/workspace/src/main/java/com/jobportal/config/OpenApiConfig.java
 /home/runner/workspace/src/main/java/com/jobportal/controller/AuthController.java
 /home/runner/workspace/src/main/java/com/jobportal/controller/JobController.java
 /home/runner/workspace/src/main/java/com/jobportal/dto/JobDTO.java

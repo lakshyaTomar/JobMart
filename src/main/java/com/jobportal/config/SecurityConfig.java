@@ -38,9 +38,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // MVC matchers for API endpoints
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/auth/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui.html")).permitAll()
                         // Ant pattern matcher for H2 console which is not Spring MVC
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .anyRequest().authenticated()

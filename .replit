@@ -23,6 +23,10 @@ args = "run_job_portal"
 task = "workflow.run"
 args = "Job Portal App"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "JobPortalApp"
+
 [[workflows.workflow]]
 name = "Spring Boot Application"
 author = "agent"
@@ -65,6 +69,21 @@ task = "packager.installForAll"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "./mvnw spring-boot:run"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "JobPortalApp"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd $(pwd) && MAVEN_OPTS=\"-XX:+ExitOnOutOfMemoryError\" ./mvnw spring-boot:run"
 waitForPort = 5000
 
 [deployment]
