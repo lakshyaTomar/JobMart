@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jobportal</groupId>
-    <artifactId>job-portal-service</artifactId>
+    <artifactId>JobMart</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>job-portal-service</name>
     <description>Job portal backend service</description>
