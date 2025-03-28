@@ -1,5 +1,6 @@
 package com.jobportal.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jobportal.enums.JobType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -39,7 +41,9 @@ public class JobDTO {
     private BigDecimal salary;
 
     private LocalDateTime postedDate;
-    private LocalDateTime expirationDate;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate expirationDate;
     private String requirements;
     private String benefits;
     private Long employerId;

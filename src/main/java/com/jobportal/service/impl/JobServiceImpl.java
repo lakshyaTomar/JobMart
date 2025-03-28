@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -147,6 +149,13 @@ public class JobServiceImpl implements JobService {
         }
         
         jobRepository.delete(job);
+    }
+    
+    @Override
+    public List<JobDTO> findAllJobs() {
+        return jobRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     private JobDTO convertToDto(Job job) {

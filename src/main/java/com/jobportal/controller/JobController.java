@@ -31,6 +31,16 @@ public class JobController {
             @RequestParam(required = false) String company,
             Pageable pageable) {
         
+        // Create a map of parameters for debugging
+        System.out.println("Search parameters received:");
+        System.out.println("keyword: " + keyword);
+        System.out.println("location: " + location);
+        System.out.println("jobType: " + jobType);
+        System.out.println("minSalary: " + minSalary);
+        System.out.println("remote: " + remote);
+        System.out.println("company: " + company);
+        
+        // Create criteria without builder to avoid any conversion issues
         JobSearchCriteria searchCriteria = new JobSearchCriteria();
         searchCriteria.setKeyword(keyword);
         searchCriteria.setLocation(location);
@@ -38,17 +48,29 @@ public class JobController {
         searchCriteria.setRemote(remote);
         searchCriteria.setCompany(company);
         
-        // Safely convert the jobType string to enum
+        // Handle jobType separately with clear error handling
         if (jobType != null && !jobType.isEmpty()) {
             try {
-                searchCriteria.setJobType(com.jobportal.enums.JobType.valueOf(jobType));
+                // Try converting string to enum using exact case matching
+                com.jobportal.enums.JobType enumJobType = com.jobportal.enums.JobType.valueOf(jobType);
+                searchCriteria.setJobType(enumJobType);
+                System.out.println("Successfully converted jobType to enum: " + enumJobType);
             } catch (IllegalArgumentException e) {
-                // Log the error but continue with null jobType
-                System.out.println("Invalid job type: " + jobType);
+                System.out.println("Invalid jobType value: " + jobType + ". Error: " + e.getMessage());
+                // Leave jobType as null in searchCriteria
             }
         }
         
-        return ResponseEntity.ok(jobService.findJobs(searchCriteria, pageable));
+        // Get all jobs from database for debugging
+        System.out.println("All jobs in database:");
+        jobService.findAllJobs().forEach(job -> 
+            System.out.println("Job: " + job.getTitle() + ", Type: " + job.getJobType()));
+        
+        // Proceed with search
+        Page<JobDTO> results = jobService.findJobs(searchCriteria, pageable);
+        System.out.println("Search returned " + results.getTotalElements() + " results");
+        
+        return ResponseEntity.ok(results);
     }
     
     @GetMapping
