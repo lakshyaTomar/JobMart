@@ -33,6 +33,14 @@ public class JobServiceImpl implements JobService {
     public Page<JobDTO> findJobs(JobSearchCriteria searchCriteria, Pageable pageable) {
         String jobTypeStr = searchCriteria.getJobType() != null ? searchCriteria.getJobType().name() : null;
         
+        // Debug: List all jobs before filtering
+        System.out.println("All jobs in database:");
+        jobRepository.findAll().forEach(job -> 
+            System.out.println("Job ID: " + job.getId() + 
+                              ", Title: " + job.getTitle() + 
+                              ", Active: " + job.isActive() + 
+                              ", Created: " + job.getCreatedAt()));
+        
         Page<Job> jobs = jobRepository.findBySearchCriteria(
                 searchCriteria.getKeyword(),
                 searchCriteria.getLocation(),
@@ -42,6 +50,9 @@ public class JobServiceImpl implements JobService {
                 searchCriteria.getCompany(),
                 pageable
         );
+        
+        // Debug: Show filtered jobs count
+        System.out.println("Filtered jobs count: " + jobs.getTotalElements());
         
         return jobs.map(this::convertToDto);
     }
@@ -77,7 +88,10 @@ public class JobServiceImpl implements JobService {
                 .contactEmail(jobDTO.getContactEmail())
                 .contactPhone(jobDTO.getContactPhone())
                 .remote(jobDTO.isRemote())
+                .active(true) // Explicitly set active to true
                 .build();
+                
+        System.out.println("Creating job with active status: " + job.isActive()); // Debug
         
         Job savedJob = jobRepository.save(job);
         return convertToDto(savedJob);
