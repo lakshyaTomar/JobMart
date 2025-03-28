@@ -1,0 +1,79 @@
+modules = ["java"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Spring Boot Application"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "run_job_portal"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Job Portal App"
+
+[[workflows.workflow]]
+name = "Spring Boot Application"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "mvn spring-boot:run -f pom.xml"
+waitForPort = 8000
+
+[[workflows.workflow]]
+name = "run_job_portal"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./mvnw spring-boot:run"
+
+[[workflows.workflow]]
+name = "Job Portal App"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./mvnw spring-boot:run"
+waitForPort = 5000
+
+[deployment]
+run = ["sh", "-c", "mvn spring-boot:run -f pom.xml"]
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
+
+[[ports]]
+localPort = 8000
+externalPort = 80
